@@ -17,7 +17,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider',
         templateUrl: '/pages/register.html',
         controller: 'registerCtrl'
       }).
-      when('/bridge', {
+      when('/bridge' + 'asdf', {
         templateUrl: 'private/pages/bridge.html',
         controller: 'bridgeCtrl'
       }).
