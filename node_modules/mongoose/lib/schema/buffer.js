@@ -5,7 +5,7 @@
 var handleBitwiseOperator = require('./operators/bitwise');
 var utils = require('../utils');
 
-var MongooseBuffer = require('../types').Buffer;
+var MongooseBuffer = require('../types/index').Buffer;
 var SchemaType = require('../schematype');
 
 var Binary = MongooseBuffer.Binary;

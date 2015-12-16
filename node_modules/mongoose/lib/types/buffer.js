@@ -2,7 +2,7 @@
  * Module dependencies.
  */
 
-var Binary = require('../drivers').Binary,
+var Binary = require('../drivers/index').Binary,
     utils = require('../utils');
 
 /**

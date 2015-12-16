@@ -2,7 +2,7 @@
  * Module dependencies.
  */
 
-var readPref = require('./drivers').ReadPreference;
+var readPref = require('./drivers/index').ReadPreference;
 var EventEmitter = require('events').EventEmitter;
 var VirtualType = require('./virtualtype');
 var utils = require('./utils');

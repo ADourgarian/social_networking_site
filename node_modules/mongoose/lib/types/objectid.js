@@ -8,6 +8,6 @@
  * @constructor ObjectId
  */
 
-var ObjectId = require('../drivers').ObjectId;
+var ObjectId = require('../drivers/index').ObjectId;
 
 module.exports = ObjectId;
