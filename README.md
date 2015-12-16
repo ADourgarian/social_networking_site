@@ -35,19 +35,34 @@
   There will also be a button which will direct the user to the user registration form where
   the user will be able to register as a new user. On successful submition of the registration form, their profile
   will be stored in the database and they will be redirected to the login form.
+  ##### Interface
+    Unless logged in, these buttons will always be located in the nav bar at the top right of the page. If the user is
+    logged in, a logout button will replace them.
 #### User Profile Page (Editable)
   Upon login the User will be directed to the User Profile Page. This page will display their information as supplied
   from the database. They will have the option to edit their own information. If a user navigates to an other user's page,
   the other user's information will be displayed and the current user will be unable to edit the other user's information.
+  ###### Interface
+    The User Profile Page will consist of a nav bar at the top of the window with the search bar and logout or
+    login/register buttons at the right of the nav bar. Directly below that will be a stock background cover photo that 
+    will dominate the upper half of the page and a default placeholder for a headshot photo along with that user's name. 
+    Bellow the cover photo, any personal information that the page's user has provided will be displayed. This will include
+    but will not be limited to what instruments the user plays, the city they live in, any genres they might be interested 
+    in, and a summary of their music career.
 #### Band Profile Page
   A user that is logged in will have the option to create a Band Profile Page. While this page will be similar to the
-  User Profile Page, several people may have a shared ability to edit the information on this page. If a user navigates to a
-  Band Profile Page that does not belong to that Band Profile Page, the user will be able to view that band's information,
-  but not edit it.
+  User Profile Page, several people may have a shared ability to edit the information on this page. If a user navigates to
+  a Band Profile Page that does not belong to that Band Profile Page, the user will be able to view that band's 
+  information, but not edit it.
+  ##### Interface
+    The Band Profile Page will also feature a the nav bar and a large cover photo along with a smaller photo for their
+    logo or latest album cover and their name. Below the cover photo, any information that the band has provided will be 
+    display which will include but will not be limited to their band members, what genre they belong to, and any upcoming 
+    shows they might be playing.
 #### Search Bar
-  The search bar will be located at the top of the page. Searches will allow searching by name and bandname.
-  The results list will include any users or bands that meet that match the search entry. Clicking on a result
-  will redirect the user to the User Profile Page or Band Profile Page with the corresponding users information displayed.
+  The search bar will be located at the top of the page as a part of the nav bar. Searches will allow searching by name and
+  bandname. The results list will include any users or bands that match the search entry. Clicking on a result
+  will redirect the user to the User Profile Page or Band Profile Page with the corresponding user's or band's information   displayed.
 
 ## Project Milestones
 | Milestones                                    | Date      |
@@ -69,3 +84,9 @@
 | Google Chrome                 | 47 or higher   |
 | Mozilla Firefox               | 40 or higher   |
 
+## Stretch Goals
+  * Create a fully functional multi-view template for bands to populate with photos and information along with a forum.
+  * Make the entire site with responsive design to display nicely on mobile devices.
+
+## Source Code
+  The source code will be available for all to see at https://github.com/ADourgarian/social_networking_site
