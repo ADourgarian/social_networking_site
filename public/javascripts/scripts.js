@@ -17,14 +17,18 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider',
         templateUrl: '/pages/register.html',
         controller: 'registerCtrl'
       }).
-      when('/bridge' + 'asdf', {
-        templateUrl: 'private/pages/bridge.html',
+      when('/bridge', {
+        templateUrl: '/pages/bridge.html',
         controller: 'bridgeCtrl'
       }).
       when('/login', {
-          templateUrl: 'pages/login.html',
+          templateUrl: '/pages/login.html',
           controller: 'loginCtrl'
         }).
+      when('/bridge/:user', {
+          templateUrl: '/pages/bridge.html',
+          controller: 'bridgeCtrl'
+      }).
       otherwise({
         redirectTo: '/bridge'
       });
@@ -52,43 +56,59 @@ app.controller ('homeCtrl', ['$scope', function ($scope){
   $scope.message = 'Welcome to the Home Page.';
 }]);
 
-app.controller('newsCtrl', ['$scope', function($scope){
-  $scope.message = "Welcome to the News Page";
-}]);
+//app.controller('newsCtrl', ['$scope', function($scope){
+//  $scope.message = "Welcome to the News Page";
+//}]);
+//
+//app.controller('musicCtrl', ['$scope', function($scope){
+//  $scope.message = "Welcome to the Music Page";
+//}]);
+//
+//app.controller('eventsCtrl', ['$scope', function($scope){
+//  $scope.message = "Welcome to the Events Page";
+//}]);
+//
+//app.controller('photosCtrl', ['$scope', function($scope){
+//  $scope.message = "Welcome to the Photos Page";
+//}]);
+//
+//app.controller('videosCtrl', ['$scope', function($scope){
+//  $scope.message = "Welcome to the Videos Page";
+//}]);
+//app.controller('newsCtrl', ['$scope', function ($scope) {
+//  $scope.message = "WASSUP!";
+//}]);
 
-app.controller('musicCtrl', ['$scope', function($scope){
-  $scope.message = "Welcome to the Music Page";
-}]);
+app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '$location',
+  function($scope, $http, $routeParams, authService, $location){
+    $scope.currentUser = authService.getUser().username; //set var for logged in user
+    // determine where to send user.
+    if ($routeParams.user){ // if entered param, direct to that profile.
+      $scope.url = $routeParams.user;
+    } else if (authService.getUser()){ // if no param, but is logged in, direct to their user
+      $scope.url = $scope.currentUser;
+    } else {
+      $location.path('/')
+    } // if neither, send to home
 
-app.controller('eventsCtrl', ['$scope', function($scope){
-  $scope.message = "Welcome to the Events Page";
-}]);
+    $http({
+      url: '/users/' + $scope.url,
+      method: 'get'
+    }).then(function (response) {
+      if (response.data) {
+        $scope.fullName = response.data.firstName + ' ' + response.data.lastName;
+      } else {
+        $location.path('/');
+      }
+    });
 
-app.controller('photosCtrl', ['$scope', function($scope){
-  $scope.message = "Welcome to the Photos Page";
-}]);
+    $scope.openForm = false;
+    $scope.editForm = function(){
+      $scope.openForm = true;
+    };
 
-app.controller('videosCtrl', ['$scope', function($scope){
-  $scope.message = "Welcome to the Videos Page";
-}]);
+  }]);
 
-app.controller('bridgeCtrl', ['$scope', '$http', 'authService', '$location', function ($scope, $http, authService, $location) {
-  $scope.message = "Welcome to HELL!";
-
-  //finds last part of url path
-  $scope.url = $location.path().split('/');
-  $scope.url = $scope.url[$scope.url.length-1];
-  $http({
-    url: '/users/' + $scope.url,
-    method: 'get'
-  }).then(function (response) {
-    $scope.tests = response.data.username;
-  });
-}]);
-
-app.controller('newsCtrl', ['$scope', function ($scope) {
-  $scope.message = "WASSUP!";
-}]);
 
 app.controller('registerCtrl', ['$scope', '$http', '$location', function ($scope, $http, $location) {
   $scope.submit = function () {
@@ -99,6 +119,7 @@ app.controller('registerCtrl', ['$scope', '$http', '$location', function ($scope
       });
   }
 }]);
+
 app.controller('loginCtrl', ['$scope', '$http', 'authService', '$location',
   function ($scope, $http, authService, $location) {
     $scope.submit = function () {

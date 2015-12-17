@@ -16,5 +16,6 @@ nav(ng-controller="navCtrl")
     li(ng-show='user.username')
       a(href='/#bridge') bridge
     li(ng-show='user.username')
-      p Hello {{user.username}}!
+      p Logged in as {{user.username}}!
+
     block content
