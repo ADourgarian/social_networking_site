@@ -7,14 +7,18 @@ html(ng-app="myApp")
     script(src="/javascripts/scripts.js")
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+.search(ng-controller="searchCtrl")
+  input(type='text' ng-model="entry")
+  button(type='button' ng-click="submit()") Search
+  p {{test}}
 nav(ng-controller="navCtrl")
   ul
     li(ng-hide="user.username")
       a(href='#/login') login
     li(ng-show='user.username')
-      a(ng-click='logout()' href='#/') logout
-    li(ng-show='user.username')
       a(href='/#bridge') bridge
+    li(ng-show='user.username')
+      a(ng-click='logout()' href='#/') logout
     li(ng-show='user.username')
       p Logged in as {{user.username}}!
 

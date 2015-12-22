@@ -1,8 +1,35 @@
+
 <div ng-if="openForm === false">
   <h1>{{fullName}}</h1>
   <button ng-if="url === currentUser" ng-click="editForm()">Edit</button>
 </div>
 
 <div ng-if="openForm === true">
-
+  <form ng-submit="submit()">
+    <label>First Name</label>
+    <input type="text" name="fName" placeholder="First Name">
+    <label>Last Name</label>
+    <input type="text" name="lName" placeholder="First Name">
+    <label>City</label>
+    <input type="text" name="city" placeholder="City">
+    <div>
+      <h2>Instruments</h2>
+      <fieldset>
+        <legend>instruments</legend>
+        <div ng-repeat="instrument in instruments">
+          <input type="checkbox" name='{{instrument.name}}' ng-click="click(instrument)">
+          <label>{{instrument.name}}</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Genres</legend>
+        <div ng-repeat="genre in genres">
+          <input type="checkbox" name='{{genre.name}}' ng-click="click(genre)">
+          <label>{{genre.name}}</label>
+        </div>
+      </fieldset>
+    </div>
+    <input type="submit" value="Save">
+  </form>
 </div>
+

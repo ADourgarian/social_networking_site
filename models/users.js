@@ -16,7 +16,8 @@ var UserSchema = new mongoose.Schema({
   firstName: {type: String, required: true},
   lastName: {type: String, required: true},
   username: {type: String, required: true, index: {unique: true}},
-  password: {type: String, required: true}
+  password: {type: String, required: true},
+  editable: {instrumentsPlayed:[],genresPlayed:[]}
 });
 
 /**
@@ -127,7 +128,8 @@ UserSchema.statics.Create = function (user, callback) {
         password: user.password,
         username: user.username,
         firstName: user.firstName,
-        lastName: user.lastName
+        lastName: user.lastName,
+        editable: user.editable
       });
 
       // save the user

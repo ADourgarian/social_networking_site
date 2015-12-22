@@ -80,8 +80,8 @@ app.controller ('homeCtrl', ['$scope', function ($scope){
 //}]);
 
 app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '$location',
-  function($scope, $http, $routeParams, authService, $location){
-    $scope.currentUser = authService.getUser().username; //set var for logged in user
+  function($scope, $http, $routeParams, authService, $location, bridgeCtrl){
+    $scope.currentUser = authService.getUser().username; //set var for logged ßin user
     // determine where to send user.
     if ($routeParams.user){ // if entered param, direct to that profile.
       $scope.url = $routeParams.user;
@@ -91,11 +91,14 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
       $location.path('/')
     } // if neither, send to home
 
+    // get profile based on query.
     $http({
       url: '/users/' + $scope.url,
       method: 'get'
     }).then(function (response) {
       if (response.data) {
+        console.log(response.data);
+        $scope.user = response.data;
         $scope.fullName = response.data.firstName + ' ' + response.data.lastName;
       } else {
         $location.path('/');
@@ -107,6 +110,85 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
       $scope.openForm = true;
     };
 
+    $scope.instruments = [
+      {name: 'Acoustic Guitar', plays: false},
+      {name: 'Background Singer', plays: false},
+      {name: 'Bass Guitar', plays: false},
+      {name: 'Keyboard Lead', plays: false},
+      {name: 'Guitar Other', plays: false},
+      {name: 'Piano Rhythm', plays: false},
+      {name: 'Guitar Saxophone', plays: false},
+      {name: 'Steel Guitar', plays: false},
+      {name: 'Trombone Trumpet', plays: false},
+      {name: 'Ukulele Vocalist', plays: false},
+      {name: 'Vocalist: Alto', plays: false},
+      {name: 'Vocalist: Baritone', plays: false},
+      {name: 'Vocalist: Bass', plays: false},
+      {name: 'Vocalist: Soprano', plays: false},
+      {name: 'Vocalist: Tenor', plays: false}
+    ];
+
+    $scope.genres = [
+      {name: 'Acoustic', plays: false},
+      {name: 'Classic Rock', plays: false},
+      {name: 'Dubstep', plays: false},
+      {name: 'Heavy Metal', plays: false},
+      {name: 'Punk', plays: false},
+      {name: 'Alternative', plays: false},
+      {name: 'Celtic', plays: false},
+      {name: 'Classical', plays: false},
+      {name: 'Electronic', plays: false},
+      {name: 'Hip Hop', plays: false},
+      {name: 'Other', plays: false},
+      {name: 'R&B', plays: false},
+      {name: 'Southern Rock', plays: false},
+      {name: 'Bluegrass', plays: false},
+      {name: 'Gospel', plays: false},
+      {name: 'Country', plays: false},
+      {name: 'Folk', plays: false},
+      {name: 'Jazz', plays: false},
+      {name: 'Pop', plays: false},
+      {name: 'Reggae', plays: false},
+      {name: 'World', plays: false},
+      {name: 'Blues', plays: false},
+      {name: 'Cover/Tribute', plays: false},
+      {name: 'Funk', plays: false},
+      {name: 'Latin', plays: false},
+      {name: 'Progressive', plays: false},
+      {name: 'Rock', plays: false}
+    ];
+
+    $scope.click = function(object){
+      if (object.plays === true){
+        object.plays = false;
+      } else if (object.plays === false){
+        object.plays = true;
+      }
+    };
+
+    $scope.submit = function () {
+      $scope.instrumentsList = [];
+      $scope.genresList = [];
+
+      for (var i in $scope.instruments){
+        if ($scope.instruments[i].plays === true) {
+          $scope.instrumentsList.push($scope.instruments[i].name);
+        }
+      }
+      for (var i in $scope.genres){
+        if ($scope.genres[i].plays === true) {
+          $scope.genresList.push($scope.genres[i].name);
+        }
+      }
+      $scope.editable = {
+        instrumentsPlayed: $scope.instrumentsList,
+        genresPlayed: $scope.genresList
+      };
+      $http.put('/users/' + $scope.user.username, $scope.editable)
+        .then(function (response) {
+          console.log(response);
+        });
+    }
   }]);
 
 
@@ -137,6 +219,21 @@ app.controller('loginCtrl', ['$scope', '$http', 'authService', '$location',
         })
     };
   }]);
+
+app.controller('searchCtrl',['$scope', '$http', '$location', function($scope, $http, $location){
+  $scope.submit = function(){
+    $http({
+      url: '/users/' + $scope.entry,
+      method: 'get'
+    }).then(function (response) {
+      if (response.data){
+        $location.path('/bridge/'+response.data.username);
+      } else {
+        alert('User not found');
+      }
+    })
+  }
+}]);
 
 app.controller('navCtrl', ['authService', '$scope', '$location',
   function (authService, $scope, $location) {
