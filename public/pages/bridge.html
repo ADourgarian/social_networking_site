@@ -5,31 +5,45 @@
 </div>
 
 <div ng-if="openForm === true">
+  <form ng-app="fileUpload" ng-controller="MyCtrl" name="form">
+    Single Image with validations
+    <div class="button" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
+         ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100"
+         ngf-resize="{width: 100, height: 100}">Select</div>
+    Multiple files
+    <div class="button" ngf-select ng-model="files" ngf-multiple="true">Select</div>
+    Drop files: <div ngf-drop ng-model="files" class="drop-box">Drop</div>
+    <button type="submit" ng-click="submit()">submit</button>
+  </form>
   <form ng-submit="submit()">
+    <input ng-model="photo"
+           onchange="angular.element(this).scope().file_changed(this)"
+           type="file" accept="image/*" />
     <label>First Name</label>
-    <input type="text" name="fName" placeholder="First Name">
+    <input type="text" name="fName" ng-model="userInfo.firstName" value={{userInfo.firstName}}>
     <label>Last Name</label>
-    <input type="text" name="lName" placeholder="First Name">
+    <input type="text" name="lName" ng-model="userInfo.lastName" value={{userInfo.lastName}}>
     <label>City</label>
-    <input type="text" name="city" placeholder="City">
+    <input type="text" name="city" ng-model="editable.city" value={{editable.city}}>
     <div>
       <h2>Instruments</h2>
       <fieldset>
         <legend>instruments</legend>
         <div ng-repeat="instrument in instruments">
-          <input type="checkbox" name='{{instrument.name}}' ng-click="click(instrument)">
+          <input type="checkbox" name='{{instrument.name}}' ng-click="click(instrument)" ng-checked="{{instrument.plays}}">
           <label>{{instrument.name}}</label>
         </div>
       </fieldset>
       <fieldset>
         <legend>Genres</legend>
         <div ng-repeat="genre in genres">
-          <input type="checkbox" name='{{genre.name}}' ng-click="click(genre)">
+          <input type="checkbox" name='{{genre.name}}' ng-click="click(genre)" ng-checked="{{genre.plays}}">
           <label>{{genre.name}}</label>
         </div>
       </fieldset>
     </div>
     <input type="submit" value="Save">
+    <button ng-click="editForm()">Done Editing</button>
   </form>
 </div>
 

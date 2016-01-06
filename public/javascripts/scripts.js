@@ -1,7 +1,7 @@
 /**
  * Created by AVALON on 12/9/15.
  */
-var app = angular.module('myApp', ['ngRoute']);
+var app = angular.module('myApp', ['ngRoute', 'ngFileUpload']);
 
 app.config(['$routeProvider', '$locationProvider', '$httpProvider',
   function ($routeProvider, $locationProvider, $httpProvider) {
@@ -79,8 +79,8 @@ app.controller ('homeCtrl', ['$scope', function ($scope){
 //  $scope.message = "WASSUP!";
 //}]);
 
-app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '$location',
-  function($scope, $http, $routeParams, authService, $location, bridgeCtrl){
+app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '$location', 'upload',
+  function($scope, $http, $routeParams, authService, $location, upload){
     $scope.currentUser = authService.getUser().username; //set var for logged ßin user
     // determine where to send user.
     if ($routeParams.user){ // if entered param, direct to that profile.
@@ -90,25 +90,6 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
     } else {
       $location.path('/')
     } // if neither, send to home
-
-    // get profile based on query.
-    $http({
-      url: '/users/' + $scope.url,
-      method: 'get'
-    }).then(function (response) {
-      if (response.data) {
-        console.log(response.data);
-        $scope.user = response.data;
-        $scope.fullName = response.data.firstName + ' ' + response.data.lastName;
-      } else {
-        $location.path('/');
-      }
-    });
-
-    $scope.openForm = false;
-    $scope.editForm = function(){
-      $scope.openForm = true;
-    };
 
     $scope.instruments = [
       {name: 'Acoustic Guitar', plays: false},
@@ -158,6 +139,54 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
       {name: 'Rock', plays: false}
     ];
 
+    // get profile based on query.
+    function getUserInfo() {
+      $http({
+        url: '/users/' + $scope.url,
+        method: 'get'
+      }).then(function (response) {
+        if (response.data){
+          $scope.username = response.data.username;
+          $scope.userInfo = response.data;
+          $scope.editable = $scope.userInfo.editable;
+          $scope.fullName = $scope.userInfo.firstName + ' ' + $scope.userInfo.lastName;
+
+          // pre-fill form.
+          $scope.fillCheckboxes($scope.editable.instrumentsPlayed, $scope.instruments);
+          $scope.fillCheckboxes($scope.editable.genresPlayed, $scope.genres);
+        } else {
+          $location.path('/');
+        }
+      });
+    }
+
+    getUserInfo();
+
+    // form settings
+    $scope.openForm = false;
+    $scope.editForm = function(){
+      if ($scope.openForm === false) {
+        $scope.openForm = true;
+      } else {
+        getUserInfo();
+        $scope.openForm = false;
+      }
+    };
+
+    // somewhat convoluted way of checking boxes if they are in the user's played arrays.
+    $scope.fillCheckboxes = function(played,listOf){
+      console.log(played);
+      played.forEach(function(itemPlayed){
+        listOf.forEach(function(itemPossible, itemPossibleNumber){
+          // if an item is played, set its "plays" field to true in the list of items.
+          if (itemPlayed === itemPossible.name){listOf[itemPossibleNumber].plays = true}
+          else { listOf.plays = false}
+        })
+      });
+      return listOf
+    };
+
+    // set true or false for checkbox items in item list arrays
     $scope.click = function(object){
       if (object.plays === true){
         object.plays = false;
@@ -166,25 +195,49 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
       }
     };
 
-    $scope.submit = function () {
-      $scope.instrumentsList = [];
-      $scope.genresList = [];
+    $scope.file_changed = function(element) {
 
-      for (var i in $scope.instruments){
-        if ($scope.instruments[i].plays === true) {
-          $scope.instrumentsList.push($scope.instruments[i].name);
-        }
+      $scope.$apply(function(scope) {
+        var photofile = element.files[0];
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          // handle onload
+        };
+        reader.readAsDataURL(photofile);
+      });
+    };
+
+    // upload later on form submit or something similar
+    $scope.submit = function() {
+      if (form.file.$valid && $scope.file) {
+        $scope.upload($scope.file);
       }
-      for (var i in $scope.genres){
-        if ($scope.genres[i].plays === true) {
-          $scope.genresList.push($scope.genres[i].name);
-        }
-      }
-      $scope.editable = {
-        instrumentsPlayed: $scope.instrumentsList,
-        genresPlayed: $scope.genresList
-      };
-      $http.put('/users/' + $scope.user.username, $scope.editable)
+    };
+
+    // upload on file select or drop
+    $scope.upload = function (file) {
+      Upload.upload({
+        url: '',
+        data: {file: file, 'username': $scope.username}
+      }).then(function (resp) {
+        console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+      }, function (resp) {
+        console.log('Error status: ' + resp.status);
+      }, function (evt) {
+        var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+        console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+      });
+    };
+
+    $scope.submit = function () {
+
+      $scope.editable.instrumentsPlayed = []; // reset instrumentsPlayed list
+      $scope.editable.genresPlayed = []; // reset genresPlayed list
+
+      $scope.editable.instrumentsPlayed = newPlayedList($scope.instruments); // recreate instrumentsPlayed
+      $scope.editable.genresPlayed = newPlayedList($scope.genres); // recreate genresPlayed
+
+      $http.put('/users/' + $scope.username, $scope.userInfo) // send new editable to server
         .then(function (response) {
           console.log(response);
         });
@@ -335,3 +388,14 @@ app.factory('authInterceptor', ['$q', '$location', 'authService', function ($q, 
     }
   };
 }]);
+
+// will create an item list of played items given the list of possible items and their 'plays' value
+function newPlayedList(listOf){
+  var played = [];
+  for (var i in listOf){
+    if (listOf[i].plays === true) {
+      played.push(listOf[i].name);
+    }
+  }
+  return played
+}

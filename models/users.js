@@ -12,12 +12,17 @@ var SALT_WORK_FACTOR = 12;
 /**
  * User schema
  */
+
 var UserSchema = new mongoose.Schema({
-  firstName: {type: String, required: true},
-  lastName: {type: String, required: true},
   username: {type: String, required: true, index: {unique: true}},
   password: {type: String, required: true},
-  editable: {instrumentsPlayed:[],genresPlayed:[]}
+  firstName: {type: String, required: true},
+  lastName: {type: String, required: true},
+  editable: {
+    instrumentsPlayed: [],
+    genresPlayed: [],
+    city: {type: String}
+  }
 });
 
 /**
@@ -105,7 +110,6 @@ UserSchema.statics.getAuthenticated = function (user, callback) {
 
 UserSchema.statics.Create = function (user, callback) {
 
-  console.log('made it this far');
   // find a user in Mongo with provided username
   this.findOne({'username': user.username}, function (err, doc) {
     // In case of any error return
@@ -120,7 +124,6 @@ UserSchema.statics.Create = function (user, callback) {
       if (user.password != user.confirm) {
         return callback(new Error('Passwords do not match.'), null);
       }
-
       // if there is no user with that username
       // create the user
       var User = mongoose.model('User', UserSchema);
@@ -128,8 +131,7 @@ UserSchema.statics.Create = function (user, callback) {
         password: user.password,
         username: user.username,
         firstName: user.firstName,
-        lastName: user.lastName,
-        editable: user.editable
+        lastName: user.lastName
       });
 
       // save the user
@@ -141,6 +143,7 @@ UserSchema.statics.Create = function (user, callback) {
         // User Registration successful
         return callback(null, newUser);
       });
+      console.log('made it this far');
     }
   });
 };

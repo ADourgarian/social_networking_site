@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
+var cloudinary = require('cloudinary');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var register = require('./routes/register');
@@ -25,6 +26,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressValidator());
+
+// set cloudinary cdn global parameters
+cloudinary.config({
+  cloud_name: 'beastlyorion',
+  api_key: '429121516721481',
+  api_secret: 'F_2XMBj0T3qgjAhX9HXAgDMTLJA'
+});
 
 // Bring Mongoose into the app
 var mongoose = require( 'mongoose' );

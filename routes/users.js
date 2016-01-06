@@ -7,7 +7,7 @@ router.get('/:username', function (req, res, next) {
   // replace with mongo data from users collection
   var username = req.params.username;
   Users.findOne({ 'username': username}, function (err, results) {
-    res.send({username: results.username, firstName: results.firstName, lastName: results.lastName});
+    res.send({username: results.username, firstName: results.firstName, lastName: results.lastName, editable: results.editable});
   });
 });
 
@@ -16,7 +16,7 @@ router.put('/:username', function (req, res, next) {
   var username = req.params.username;
   console.log('username',username);
   console.log('req.body',req.body);
-  Users.update({'username':username}, {'$set' : {'editable':req.body}}, function (err, results) {
+  Users.update({'username':username}, req.body, function (err, results) {
     console.log(results);
     res.json(results);
   });
