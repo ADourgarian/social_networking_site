@@ -2,26 +2,25 @@ doctype html
 html(ng-app="myApp")
   head
     title= title
-    script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js")
-    script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.min.js")
-    script(src="ng-file-upload-shim(.min).js")
-    script(src="ng-file-upload(.min).js")
+    script(src="/javascripts/vendors/angular.min.js")
+    script(src="/javascripts/vendors/angular-route.min.js")
+    //script(src="/javascripts/vendors/jquery.min.js")
+    script(src="/javascripts/vendors/ng-file-upload-all.min.js")
     script(src="/javascripts/scripts.js")
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
 .search(ng-controller="searchCtrl")
-  input(type='text' ng-model="entry")
-  button(type='button' ng-click="submit()") Search
-  p {{test}}
+  input(type='text' ng-keypress="searchQueue()" ng-model="query")
+  ul
+    li(ng-repeat="user in userList track by $index" ng-click="navigate(user.username)") {{user.firstName + ' ' + user.lastName}}
 nav(ng-controller="navCtrl")
   ul
+    li(ng-show='user.username')
+      p Logged in as {{user.username}}!
     li(ng-hide="user.username")
       a(href='#/login') login
     li(ng-show='user.username')
       a(href='/#bridge') bridge
     li(ng-show='user.username')
       a(ng-click='logout()' href='#/') logout
-    li(ng-show='user.username')
-      p Logged in as {{user.username}}!
-
     block content

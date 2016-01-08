@@ -10,7 +10,8 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var register = require('./routes/register');
 var login = require('./routes/login');
-
+var pictures = require('./routes/pictures');
+var search = require('./routes/search');
 
 var app = express();
 
@@ -29,9 +30,7 @@ app.use(expressValidator());
 
 // set cloudinary cdn global parameters
 cloudinary.config({
-  cloud_name: 'beastlyorion',
-  api_key: '429121516721481',
-  api_secret: 'F_2XMBj0T3qgjAhX9HXAgDMTLJA'
+
 });
 
 // Bring Mongoose into the app
@@ -74,6 +73,8 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/api/register', register);
 app.use('/api/login', login);
+app.use('/pictures', pictures);
+app.use('/search', search);
 
 
 // catch 404 and forward to error handler
@@ -89,6 +90,7 @@ app.use(function(req, res, next) {
 // will print stacktrace
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
+    console.log(err);
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,

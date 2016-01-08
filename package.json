@@ -6,6 +6,8 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "angular": "^1.4.8",
+    "angular-route": "^1.4.8",
     "bcrypt": "^0.8.5",
     "body-parser": "~1.13.2",
     "bootstrap": "^3.3.6",
@@ -24,7 +26,10 @@
     "mongo": "^0.1.0",
     "mongoose": "^4.3.1",
     "morgan": "~1.6.1",
+    "multer": "^1.1.0",
     "ng-file-upload": "^11.0.1",
-    "serve-favicon": "~2.3.0"
+    "request": "^2.67.0",
+    "serve-favicon": "~2.3.0",
+    "streamifier": "^0.1.1"
   }
 }

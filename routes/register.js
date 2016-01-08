@@ -5,6 +5,7 @@
 var express = require('express');
 var router = express.Router();
 var Users = require('../models/users');
+var userInfo = require('../models/userInfo');
 
 /* POST /api/register/ */
 router.post('/', function (req, res, next) {
@@ -19,7 +20,18 @@ router.post('/', function (req, res, next) {
       if (err) {
         res.status(400).send(err.message);
       } else {
-        res.sendStatus(200);
+        // create userInfo for this user
+        user.city='';
+        user.profilePic_id='';
+        user.coverPhoto='';
+        userInfo.Create(user, function (err, userInfo) {
+          console.log(user);
+          if (err) {
+            res.status(400).send(err.message);
+          } else {
+            res.sendStatus(200);
+          }
+        });
       }
     });
   }

@@ -21,6 +21,10 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider',
         templateUrl: '/pages/bridge.html',
         controller: 'bridgeCtrl'
       }).
+      when('/band', {
+        templateUrl: '/pages/band.html',
+        controller: 'bandCtrl'
+      }).
       when('/login', {
           templateUrl: '/pages/login.html',
           controller: 'loginCtrl'
@@ -79,8 +83,8 @@ app.controller ('homeCtrl', ['$scope', function ($scope){
 //  $scope.message = "WASSUP!";
 //}]);
 
-app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '$location', 'upload',
-  function($scope, $http, $routeParams, authService, $location, upload){
+app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '$location', 'Upload',
+  function($scope, $http, $routeParams, authService, $location, Upload){
     $scope.currentUser = authService.getUser().username; //set var for logged ßin user
     // determine where to send user.
     if ($routeParams.user){ // if entered param, direct to that profile.
@@ -146,10 +150,12 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
         method: 'get'
       }).then(function (response) {
         if (response.data){
+          console.log(response.data);
           $scope.username = response.data.username;
           $scope.userInfo = response.data;
           $scope.editable = $scope.userInfo.editable;
           $scope.fullName = $scope.userInfo.firstName + ' ' + $scope.userInfo.lastName;
+          $scope.profilePic = $scope.userInfo.profilePic;
 
           // pre-fill form.
           $scope.fillCheckboxes($scope.editable.instrumentsPlayed, $scope.instruments);
@@ -164,6 +170,7 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
 
     // form settings
     $scope.openForm = false;
+    $scope.changeProfilePic = false;
     $scope.editForm = function(){
       if ($scope.openForm === false) {
         $scope.openForm = true;
@@ -173,9 +180,28 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
       }
     };
 
+    $scope.profilePicButton = 'Change Profile Pic';
+    $scope.editPic = function(){
+      if ($scope.changeProfilePic === false){
+        $scope.changeProfilePic = true;
+        $scope.profilePicButton = 'Done Editing'
+      } else {
+        getUserInfo();
+        $scope.changeProfilePic = false;
+        $scope.profilePicButton = 'Change Profile Pic'
+      }
+    };
+    //$scope.toggleContent = function(content){
+    //  if (content === false) {
+    //    content = true;
+    //  } else {
+    //    getUserInfo();
+    //    content = false;
+    //  }
+    //};
+
     // somewhat convoluted way of checking boxes if they are in the user's played arrays.
     $scope.fillCheckboxes = function(played,listOf){
-      console.log(played);
       played.forEach(function(itemPlayed){
         listOf.forEach(function(itemPossible, itemPossibleNumber){
           // if an item is played, set its "plays" field to true in the list of items.
@@ -207,26 +233,26 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
       });
     };
 
-    // upload later on form submit or something similar
-    $scope.submit = function() {
-      if (form.file.$valid && $scope.file) {
-        $scope.upload($scope.file);
-      }
-    };
+    //$('.profilePicForm').on('submit',function(event){
+    //  event.preventDefault();
+    //  alert('hello');
+    //  console.log($(this).serializeArray());
+    //});
 
-    // upload on file select or drop
-    $scope.upload = function (file) {
+
+    // upload later on form submit or something similar
+    $scope.submitProfilePic = function(){
+      console.log($scope.username);
       Upload.upload({
-        url: '',
-        data: {file: file, 'username': $scope.username}
-      }).then(function (resp) {
-        console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
-      }, function (resp) {
-        console.log('Error status: ' + resp.status);
-      }, function (evt) {
-        var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-        console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-      });
+        url: '/pictures/profile/'+ $scope.username,
+        method: 'post',
+        data: $scope.upload,
+        dataType: 'formData'
+      }).then(function (response) {
+        console.log(response.data);
+       // $scope.uploads.push(response.data);
+        $scope.upload = {};
+      })
     };
 
     $scope.submit = function () {
@@ -243,7 +269,6 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
         });
     }
   }]);
-
 
 app.controller('registerCtrl', ['$scope', '$http', '$location', function ($scope, $http, $location) {
   $scope.submit = function () {
@@ -274,15 +299,31 @@ app.controller('loginCtrl', ['$scope', '$http', 'authService', '$location',
   }]);
 
 app.controller('searchCtrl',['$scope', '$http', '$location', function($scope, $http, $location){
-  $scope.submit = function(){
+
+  var myTimer;
+
+  // initiates search 1 second after last keypress
+  $scope.searchQueue = function(){
+    clearTimeout(myTimer);
+    myTimer = setTimeout(function(){
+      $scope.entry();
+    },2000);
+  };
+
+  $scope.navigate = function(username){
+    console.log(username);
+   // $location.path('/bridge/'+username);
+  };
+
+  $scope.entry = function(){
     $http({
-      url: '/users/' + $scope.entry,
+      url: '/search/' + $scope.query,
       method: 'get'
     }).then(function (response) {
       if (response.data){
-        $location.path('/bridge/'+response.data.username);
+        $scope.userList = response.data;
       } else {
-        alert('User not found');
+        $scope.message = 'No Users Found';
       }
     })
   }

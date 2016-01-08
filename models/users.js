@@ -5,6 +5,7 @@
  * Module dependencies
  */
 var mongoose = require('mongoose');
+var userInfo = require('./userInfo');
 var bcrypt = require('bcrypt');
 var jsonwebtoken = require('jsonwebtoken');
 var SALT_WORK_FACTOR = 12;
@@ -17,12 +18,7 @@ var UserSchema = new mongoose.Schema({
   username: {type: String, required: true, index: {unique: true}},
   password: {type: String, required: true},
   firstName: {type: String, required: true},
-  lastName: {type: String, required: true},
-  editable: {
-    instrumentsPlayed: [],
-    genresPlayed: [],
-    city: {type: String}
-  }
+  lastName: {type: String, required: true}
 });
 
 /**
@@ -142,8 +138,9 @@ UserSchema.statics.Create = function (user, callback) {
         }
         // User Registration successful
         return callback(null, newUser);
+        console.log('successfully created user');
       });
-      console.log('made it this far');
+
     }
   });
 };
