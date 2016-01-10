@@ -197,6 +197,7 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
       return nextPostId;
     };
 
+    // every post gets its own object with its own comments array, tracked by IDs, and get added to postList array.
     $scope.post = function (){
       var currentPost = {
         text: $scope.newPost,
@@ -207,6 +208,8 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
       $scope.postList.push(currentPost);
     };
 
+
+    // every comment added to current post's comments field, each comment has object with ID for tracking
     $scope.postComment = function(post_id){
       for (var i in $scope.postList){
         if ($scope.postList[i].post_id === post_id){

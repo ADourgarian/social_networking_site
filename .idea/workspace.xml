@@ -2,20 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="211a1928-de84-4524-99cf-21ae82ba0172" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/javascripts/appConfig.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/javascripts/controllers/bridgeCtrl.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/javascripts/controllers/homeCtrl.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/javascripts/controllers/loginCtrl.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/javascripts/controllers/registerCtrl.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/javascripts/controllers/searchCtrl.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/javascripts/functions.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/javascripts/services/authInterceptor.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/javascripts/services/authService.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/javascripts/controllers/someController.js" afterPath="$PROJECT_DIR$/public/javascripts/controllers/navCtrl.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/scripts.js" afterPath="$PROJECT_DIR$/public/javascripts/scripts.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/pages/bridge.html" afterPath="$PROJECT_DIR$/public/pages/bridge.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/layout.jade" afterPath="$PROJECT_DIR$/views/layout.jade" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/controllers/bridgeCtrl.js" afterPath="$PROJECT_DIR$/public/javascripts/controllers/bridgeCtrl.js" />
     </list>
     <ignored path="social_network.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -49,8 +37,8 @@
       <file leaf-file-name="bridgeCtrl.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/javascripts/controllers/bridgeCtrl.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33333334">
-              <caret line="200" column="25" selection-start-line="200" selection-start-column="25" selection-end-line="200" selection-end-column="25" />
+            <state vertical-scroll-proportion="0.61904764">
+              <caret line="215" column="32" selection-start-line="215" selection-start-column="32" selection-end-line="215" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -174,7 +162,6 @@
         <option value="$PROJECT_DIR$/public/javascripts/controllers/navCtrl.js" />
         <option value="$PROJECT_DIR$/public/javascripts/controllers/appConfig.js" />
         <option value="$PROJECT_DIR$/public/javascripts/controllers/homeCtrl.js" />
-        <option value="$PROJECT_DIR$/public/javascripts/controllers/bridgeCtrl.js" />
         <option value="$PROJECT_DIR$/public/javascripts/controllers/registerCtrl.js" />
         <option value="$PROJECT_DIR$/public/javascripts/controllers/loginCtrl.js" />
         <option value="$PROJECT_DIR$/public/javascripts/searchCtrl.js" />
@@ -182,6 +169,7 @@
         <option value="$PROJECT_DIR$/public/javascripts/controllers/authInterceptor.js" />
         <option value="$PROJECT_DIR$/public/javascripts/controllers/functions.js" />
         <option value="$PROJECT_DIR$/views/layout.jade" />
+        <option value="$PROJECT_DIR$/public/javascripts/controllers/bridgeCtrl.js" />
       </list>
     </option>
   </component>
@@ -842,14 +830,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/javascripts/functions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/services/authService.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -898,10 +878,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/public/javascripts/functions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/controllers/bridgeCtrl.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="200" column="25" selection-start-line="200" selection-start-column="25" selection-end-line="200" selection-end-column="25" />
+        <state vertical-scroll-proportion="0.61904764">
+          <caret line="215" column="32" selection-start-line="215" selection-start-column="32" selection-end-line="215" selection-end-column="32" />
           <folding />
         </state>
       </provider>
