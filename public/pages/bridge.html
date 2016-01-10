@@ -9,6 +9,28 @@
   <ul>
     <li ng-repeat="genre in editable.genresPlayed">{{genre}}</li>
   </ul>
+  <div class="blog">
+    <textarea class="newPost" ng-model="$parent.newPost" placeholder="Write a new Post"></textarea>
+    <button class="postButton" ng-click="post()">Post</button>
+  </div>
+  <ul>
+    <li ng-repeat="post in postList">
+      <div class="postContainer">
+        <p class="postText">{{post.text}}</p>
+        <textarea ng-model="$parent.newComment"}></textarea>
+        <button ng-click="postComment(post.post_id)">Post Comment</button>
+        <div class="commentsContainer">
+          <ul>
+            <li ng-repeat="comment in commentList">
+              <div class="commentContainer">
+                <p ng-model="comment.text"></p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </li>
+  </ul>
 </div>
 <div ng-show="changeProfilePic === true">
   <form class="profilePicForm" ng-submit="submitProfilePic()">

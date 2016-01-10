@@ -9,6 +9,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider',
     //location.shift();
     //location.join('/');
 
+
     $routeProvider.when('/', {
       templateUrl: '/pages/home.html',
       controller: 'homeCtrl'
@@ -85,7 +86,9 @@ app.controller ('homeCtrl', ['$scope', function ($scope){
 
 app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '$location', 'Upload',
   function($scope, $http, $routeParams, authService, $location, Upload){
+
     $scope.currentUser = authService.getUser().username; //set var for logged ßin user
+
     // determine where to send user.
     if ($routeParams.user){ // if entered param, direct to that profile.
       $scope.url = $routeParams.user;
@@ -180,6 +183,7 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
       }
     };
 
+    // form settings for Profile Pic
     $scope.profilePicButton = 'Change Profile Pic';
     $scope.editPic = function(){
       if ($scope.changeProfilePic === false){
@@ -221,17 +225,17 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
       }
     };
 
-    $scope.file_changed = function(element) {
-
-      $scope.$apply(function(scope) {
-        var photofile = element.files[0];
-        var reader = new FileReader();
-        reader.onload = function(e) {
-          // handle onload
-        };
-        reader.readAsDataURL(photofile);
-      });
-    };
+    //$scope.file_changed = function(element) {
+    //
+    //  $scope.$apply(function(scope) {
+    //    var photofile = element.files[0];
+    //    var reader = new FileReader();
+    //    reader.onload = function(e) {
+    //      // handle onload
+    //    };
+    //    reader.readAsDataURL(photofile);
+    //  });
+    //};
 
     //$('.profilePicForm').on('submit',function(event){
     //  event.preventDefault();
@@ -267,6 +271,38 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
         .then(function (response) {
           console.log(response);
         });
+    };
+
+    // ------------------- BLOG SECTION ------------------- //
+    $scope.newPost = '';
+    $scope.newComment = '';
+    $scope.postList = [];
+    var nextPostId = 0;
+    var newPostId = function(){
+      nextPostId += 1;
+      return nextPostId;
+    };
+
+    $scope.post = function (){
+      var currentPost = {
+        text: $scope.newPost,
+        post_id: newPostId(),
+        comments: []
+      };
+      $scope.postList.push(currentPost);
+    };
+
+    $scope.postComment = function(post_id){
+      for (var i in $scope.postList){
+        if ($scope.postList[i].post_id === post_id){
+          var currentComment = {
+            text: $scope.newComment,
+            comment_id: $scope.postList[i].comments.length
+          };
+          $scope.postList[i].comments.push(currentComment);
+          console.log('currentComment: ',currentComment);
+        }
+      }
     }
   }]);
 
