@@ -17,7 +17,9 @@ var userInfoSchema = new mongoose.Schema({
   genresPlayed: [],
   city: String,
   profilePic_id:String,
-  coverPhoto: String
+  coverPhoto: String,
+  following: [],
+  followers: []
 });
 /**
  * Statics

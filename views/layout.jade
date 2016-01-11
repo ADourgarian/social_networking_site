@@ -15,6 +15,7 @@ html(ng-app="myApp")
     script(src="/javascripts/controllers/searchCtrl.js")
     script(src="/javascripts/services/authService.js")
     script(src="/javascripts/services/authInterceptor.js")
+    script(src="/javascripts/functions.js")
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
 .search(ng-controller="searchCtrl")
@@ -27,8 +28,10 @@ nav(ng-controller="navCtrl")
       p Logged in as {{user.username}}!
     li(ng-hide="user.username")
       a(href='#/login') login
+    li(ng-show="user.username")
+      a(href='#/newsFeed') NewsFeed
     li(ng-show='user.username')
-      a(href='/#bridge') bridge
+      a(href='/#bridge') Profile
     li(ng-show='user.username')
       a(ng-click='logout()' href='#/') logout
     block content

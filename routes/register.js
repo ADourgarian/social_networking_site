@@ -6,6 +6,7 @@ var express = require('express');
 var router = express.Router();
 var Users = require('../models/users');
 var userInfo = require('../models/userInfo');
+var blog = require('../models/blog');
 
 /* POST /api/register/ */
 router.post('/', function (req, res, next) {
@@ -20,6 +21,8 @@ router.post('/', function (req, res, next) {
       if (err) {
         res.status(400).send(err.message);
       } else {
+
+        blog.Create({username:user.username}, function(err, blog){});
         // create userInfo for this user
         user.city='';
         user.profilePic_id='';

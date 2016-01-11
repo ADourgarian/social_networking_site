@@ -2,6 +2,13 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
   function($scope, $http, $routeParams, authService, $location, Upload){
 
     $scope.currentUser = authService.getUser().username; //set var for logged ßin user
+    var subscriberNumber = 0;
+    var nextPostId = 0;
+    $scope.subscribeButton = 'Subscribe';
+
+
+
+
 
     // determine where to send user.
     if ($routeParams.user){ // if entered param, direct to that profile.
@@ -67,16 +74,17 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
         method: 'get'
       }).then(function (response) {
         if (response.data){
-          console.log(response.data);
           $scope.username = response.data.username;
           $scope.userInfo = response.data;
           $scope.editable = $scope.userInfo.editable;
           $scope.fullName = $scope.userInfo.firstName + ' ' + $scope.userInfo.lastName;
           $scope.profilePic = $scope.userInfo.profilePic;
 
+          console.log($scope.editable);
           // pre-fill form.
-          $scope.fillCheckboxes($scope.editable.instrumentsPlayed, $scope.instruments);
-          $scope.fillCheckboxes($scope.editable.genresPlayed, $scope.genres);
+          fillCheckboxes($scope.editable.instrumentsPlayed, $scope.instruments);
+          fillCheckboxes($scope.editable.genresPlayed, $scope.genres);
+          checkSubscription();
         } else {
           $location.path('/');
         }
@@ -119,7 +127,7 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
     //};
 
     // somewhat convoluted way of checking boxes if they are in the user's played arrays.
-    $scope.fillCheckboxes = function(played,listOf){
+    function fillCheckboxes(played,listOf){
       played.forEach(function(itemPlayed){
         listOf.forEach(function(itemPossible, itemPossibleNumber){
           // if an item is played, set its "plays" field to true in the list of items.
@@ -160,14 +168,12 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
 
     // upload later on form submit or something similar
     $scope.submitProfilePic = function(){
-      console.log($scope.username);
       Upload.upload({
         url: '/pictures/profile/'+ $scope.username,
         method: 'post',
         data: $scope.upload,
         dataType: 'formData'
       }).then(function (response) {
-        console.log(response.data);
         // $scope.uploads.push(response.data);
         $scope.upload = {};
       })
@@ -183,19 +189,24 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
 
       $http.put('/users/' + $scope.username, $scope.userInfo) // send new editable to server
         .then(function (response) {
-          console.log(response);
         });
     };
 
-    // ------------------- BLOG SECTION ------------------- //
+    // ------------------- BLOG  ------------------- //
     $scope.newPost = '';
     $scope.newComment = '';
     $scope.postList = [];
-    var nextPostId = 0;
-    var newPostId = function(){
+    function newPostId(){
       nextPostId += 1;
       return nextPostId;
     };
+
+    $http({
+      url: '/blog/' + $scope.url,
+      method: 'get'
+    }).then(function(response){
+      $scope.postList = response.data.posts;
+    });
 
     // every post gets its own object with its own comments array, tracked by IDs, and get added to postList array.
     $scope.post = function (){
@@ -203,9 +214,11 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
         text: $scope.newPost,
         post_id: newPostId(),
         newComment: '',
-        comments: []
+        comments: [],
+        date: new Date()
       };
       $scope.postList.push(currentPost);
+      updateBlog();
     };
 
 
@@ -215,12 +228,50 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
         if ($scope.postList[i].post_id === post_id){
           var currentComment = {
             text: $scope.postList[i].newComment,
-            comment_id: $scope.postList[i].comments.length
+            comment_id: $scope.postList[i].comments.length,
+            date: new Date()
           };
           $scope.postList[i].comments.push(currentComment);
-          console.log('comments: ',$scope.postList[i].comments);
           $scope.postList[i].newComment = '';
         }
       }
+      updateBlog();
+    };
+
+    function updateBlog(){
+      $http({
+        url: '/blog/' + $scope.url,
+        method: 'post',
+        data: $scope.postList
+      }).then(function(){
+      })
+    };
+
+    // -------------- SUBSCRIPTION -------------- //
+
+
+    function checkSubscription(){
+      for (var i in $scope.editable.followers) {
+        if($scope.editable.followers[i] === $scope.currentUser){
+          $scope.subscribeButton = 'UnSubscribe';
+          subscriberNumber = i;
+          return
+        }
+      }
+      $scope.subscribeButton = 'Subscribe';
+    };
+
+    $scope.subscribeToggle = function(){
+      if ($scope.subscribeButton === 'UnSubscribe'){
+        $scope.editable.followers.splice(subscriberNumber,1);
+        $scope.submit();
+        getUserInfo();
+      } else {
+        $scope.editable.followers.push($scope.currentUser);
+        $scope.submit();
+        getUserInfo();
+      }
     }
+
+
   }]);

@@ -3,6 +3,7 @@
   <image src="{{profilePic}}"></image>
   <h1>{{fullName}}</h1>
   <button ng-if="url === currentUser" ng-click="editForm()">Edit</button>
+  <button ng-show="url !== currentUser" ng-click="subscribeToggle()">{{subscribeButton}}</button>
   <ul>
     <li ng-repeat="instrument in editable.instrumentsPlayed">{{instrument}}</li>
   </ul>
@@ -10,27 +11,29 @@
     <li ng-repeat="genre in editable.genresPlayed">{{genre}}</li>
   </ul>
   <div class="blog">
-    <textarea class="newPost" ng-model="$parent.newPost" placeholder="Write a new Post"></textarea>
-    <button class="postButton" ng-click="post()">Post</button>
-  </div>
-  <ul>
-    <li ng-repeat="post in postList">
-      <div class="postContainer">
-        <p class="postText">{{post.text}}</p>
-        <textarea ng-model="post.newComment"}></textarea>
-        <button ng-click="postComment(post.post_id)">Post Comment</button>
-        <div class="commentsContainer">
-          <ul>
-            <li ng-repeat="comment in post.comments">
-              <div class="commentContainer">
-                <p ng-model="comment.text"></p>
-              </div>
-            </li>
-          </ul>
+    <form ng-submit="post()">
+      <textarea class="newPost" ng-model="$parent.newPost" placeholder="Write a new Post" required></textarea>
+      <button type="submit" class="postButton">Post</button>
+    </form>
+    <ul>
+      <li ng-repeat="post in postList">
+        <div class="postContainer">
+          <p class="postText">{{post.text}}</p>
+          <form ng-submit="postComment(post.post_id)">
+            <textarea ng-model="post.newComment" required></textarea>
+            <button type="submit">Post Comment</button>
+          </form>
+          <div class="commentsContainer">
+            <ul>
+              <li ng-repeat="comment in post.comments">
+                <p>{{comment.text}}</p>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-    </li>
-  </ul>
+      </li>
+    </ul>
+  </div>
 </div>
 <div ng-show="changeProfilePic === true">
   <form class="profilePicForm" ng-submit="submitProfilePic()">

@@ -11,8 +11,7 @@ app.controller('searchCtrl',['$scope', '$http', '$location', function($scope, $h
   };
 
   $scope.navigate = function(username){
-    console.log(username);
-    // $location.path('/bridge/'+username);
+     $location.path('/bridge/'+username);
   };
 
   $scope.entry = function(){
