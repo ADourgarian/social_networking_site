@@ -33,14 +33,13 @@ router.get('/:username', function (req, res, next) {
 
 // update userInfo
 router.put('/:username', function (req, res, next) {
+  console.log('subscribing', req.body.editable);
   // add additional info to user
   var username = req.params.username;
   //console.log('username',username);
   //console.log('req.body',req.body);
   var info = req.body.editable;
-  console.log('userInfo',userInfo);
   userInfo.update({'username':username}, info, function (err, results) {
-    console.log(results);
     res.json(results);
   });
 });

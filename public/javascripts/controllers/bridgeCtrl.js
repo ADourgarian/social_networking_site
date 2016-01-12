@@ -1,23 +1,23 @@
-app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '$location', 'Upload',
-  function($scope, $http, $routeParams, authService, $location, Upload){
+app.controller('bridgeCtrl',['$scope',  '$http', '$routeParams', 'authService','userInfoFactory', '$location', 'Upload',
+  function($scope, $http, $routeParams, authService, userInfoFactory, $location, Upload){
 
     $scope.currentUser = authService.getUser().username; //set var for logged ßin user
-    var subscriberNumber = 0;
-    var nextPostId = 0;
     $scope.subscribeButton = 'Subscribe';
+    var userInfos = {};
 
 
 
 
+    //// determine where to send user.
+    //if ($routeParams.user){ // if entered param, direct to that profile.
+    //  $scope.url = $routeParams.user;
+    //} else if (authService.getUser()){ // if no param, but is logged in, direct to their user
+    //  $scope.url = $scope.currentUser;
+    //} else {
+    //  $location.path('/')
+    //} // if neither, send to home
 
-    // determine where to send user.
-    if ($routeParams.user){ // if entered param, direct to that profile.
-      $scope.url = $routeParams.user;
-    } else if (authService.getUser()){ // if no param, but is logged in, direct to their user
-      $scope.url = $scope.currentUser;
-    } else {
-      $location.path('/')
-    } // if neither, send to home
+    $scope.url = userInfoFactory.directUser();
 
     $scope.instruments = [
       {name: 'Acoustic Guitar', plays: false},
@@ -68,30 +68,37 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
     ];
 
     // get profile based on query.
-    function getUserInfo() {
-      $http({
-        url: '/users/' + $scope.url,
-        method: 'get'
-      }).then(function (response) {
-        if (response.data){
-          $scope.username = response.data.username;
-          $scope.userInfo = response.data;
-          $scope.editable = $scope.userInfo.editable;
-          $scope.fullName = $scope.userInfo.firstName + ' ' + $scope.userInfo.lastName;
-          $scope.profilePic = $scope.userInfo.profilePic;
+    function populateCurrentUserInfo(){
+      userInfoFactory.getUserInfo($scope.currentUser).then(function(data){
+        $scope.currentUserInfo = data;
+      })
+    }
+    function populateUserInfo() {
+      userInfoFactory.getUserInfo($scope.url).then(function(data){
+        $scope.userInfo = data;
+        $scope.username = $scope.userInfo.username;
+        $scope.editable = $scope.userInfo.editable;
+        $scope.fullName = $scope.userInfo.firstName + ' ' + $scope.userInfo.lastName;
+        $scope.profilePic = $scope.userInfo.profilePic;
 
-          console.log($scope.editable);
-          // pre-fill form.
-          fillCheckboxes($scope.editable.instrumentsPlayed, $scope.instruments);
-          fillCheckboxes($scope.editable.genresPlayed, $scope.genres);
-          checkSubscription();
-        } else {
-          $location.path('/');
-        }
+        refresh();
       });
     }
 
-    getUserInfo();
+    function refresh(){
+      populateCurrentUserInfo();
+
+      populateUserInfo();
+
+      // pre-fill form.
+      fillCheckboxes($scope.editable.instrumentsPlayed, $scope.instruments);
+      fillCheckboxes($scope.editable.genresPlayed, $scope.genres);
+
+      $scope.subscribeButton = userInfoFactory.checkSubscription($scope.editable.followers);
+    }
+    populateCurrentUserInfo();
+    populateUserInfo();
+
 
     // form settings
     $scope.openForm = false;
@@ -100,7 +107,7 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
       if ($scope.openForm === false) {
         $scope.openForm = true;
       } else {
-        getUserInfo();
+        populateUserInfo();
         $scope.openForm = false;
       }
     };
@@ -112,7 +119,7 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
         $scope.changeProfilePic = true;
         $scope.profilePicButton = 'Done Editing'
       } else {
-        getUserInfo();
+        populateUserInfo();
         $scope.changeProfilePic = false;
         $scope.profilePicButton = 'Change Profile Pic'
       }
@@ -187,89 +194,28 @@ app.controller('bridgeCtrl',['$scope', '$http', '$routeParams', 'authService', '
       $scope.editable.instrumentsPlayed = newPlayedList($scope.instruments); // recreate instrumentsPlayed
       $scope.editable.genresPlayed = newPlayedList($scope.genres); // recreate genresPlayed
 
-      $http.put('/users/' + $scope.username, $scope.userInfo) // send new editable to server
-        .then(function (response) {
-        });
+      userInfoFactory.submission($scope.username, $scope.userInfo)
     };
 
-    // ------------------- BLOG  ------------------- //
-    $scope.newPost = '';
-    $scope.newComment = '';
-    $scope.postList = [];
-    function newPostId(){
-      nextPostId += 1;
-      return nextPostId;
-    };
-
-    $http({
-      url: '/blog/' + $scope.url,
-      method: 'get'
-    }).then(function(response){
-      $scope.postList = response.data.posts;
-    });
-
-    // every post gets its own object with its own comments array, tracked by IDs, and get added to postList array.
-    $scope.post = function (){
-      var currentPost = {
-        text: $scope.newPost,
-        post_id: newPostId(),
-        newComment: '',
-        comments: [],
-        date: new Date()
-      };
-      $scope.postList.push(currentPost);
-      updateBlog();
-    };
-
-
-    // every comment added to current post's comments field, each comment has object with ID for tracking
-    $scope.postComment = function(post_id){
-      for (var i in $scope.postList){
-        if ($scope.postList[i].post_id === post_id){
-          var currentComment = {
-            text: $scope.postList[i].newComment,
-            comment_id: $scope.postList[i].comments.length,
-            date: new Date()
-          };
-          $scope.postList[i].comments.push(currentComment);
-          $scope.postList[i].newComment = '';
-        }
-      }
-      updateBlog();
-    };
-
-    function updateBlog(){
-      $http({
-        url: '/blog/' + $scope.url,
-        method: 'post',
-        data: $scope.postList
-      }).then(function(){
-      })
-    };
 
     // -------------- SUBSCRIPTION -------------- //
 
 
-    function checkSubscription(){
-      for (var i in $scope.editable.followers) {
-        if($scope.editable.followers[i] === $scope.currentUser){
-          $scope.subscribeButton = 'UnSubscribe';
-          subscriberNumber = i;
-          return
-        }
-      }
-      $scope.subscribeButton = 'Subscribe';
-    };
-
     $scope.subscribeToggle = function(){
       if ($scope.subscribeButton === 'UnSubscribe'){
-        $scope.editable.followers.splice(subscriberNumber,1);
-        $scope.submit();
-        getUserInfo();
+        userInfos = userInfoFactory.unSubscribe($scope.userInfo, $scope.currentUserInfo);
+        $scope.userInfo = userInfos.userInfo;
+        $scope.currentUserInfo = userInfos.currentUserInfo;
+
+        userInfoFactory.submission($scope.username, $scope.userInfo);
+        refresh()
       } else {
-        $scope.editable.followers.push($scope.currentUser);
-        $scope.submit();
-        getUserInfo();
+        userInfos = userInfoFactory.subscribe($scope.userInfo, $scope.currentUserInfo);
+        $scope.userInfo = userInfos.userInfo;
+        $scope.currentUserInfo = userInfos.currentUserInfo;
+
+        userInfoFactory.submission($scope.username, $scope.userInfo);
+        refresh()
       }
     }
 

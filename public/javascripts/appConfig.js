@@ -16,7 +16,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider',
       controller: 'registerCtrl'
     }).
     when('/newsFeed',{
-      templateUrl: '/pages/newFeed.html',
+      templateUrl: '/pages/newsFeed.html',
       controller: 'newsFeed'
     }).
     when('/bridge', {

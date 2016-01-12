@@ -13,13 +13,18 @@ html(ng-app="myApp")
     script(src="/javascripts/controllers/navCtrl.js")
     script(src="/javascripts/controllers/registerCtrl.js")
     script(src="/javascripts/controllers/searchCtrl.js")
+    script(src="/javascripts/controllers/bridgeCtrl.js")
+    script(src="/javascripts/controllers/blogCtrl.js")
+    script(src="/javascripts/controllers/newsFeed.js")
     script(src="/javascripts/services/authService.js")
     script(src="/javascripts/services/authInterceptor.js")
+    script(src="/javascripts/services/userInfoFactory.js")
     script(src="/javascripts/functions.js")
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
 .search(ng-controller="searchCtrl")
-  input(type='text' ng-keypress="searchQueue()" ng-model="query")
+  label(for="search") Search
+  input(type='text' name="search" ng-keypress="searchQueue()" ng-model="query")
   ul
     li(ng-repeat="user in userList track by $index" ng-click="navigate(user.username)") {{user.firstName + ' ' + user.lastName}}
 nav(ng-controller="navCtrl")

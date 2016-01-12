@@ -10,13 +10,13 @@
   <ul>
     <li ng-repeat="genre in editable.genresPlayed">{{genre}}</li>
   </ul>
-  <div class="blog">
+  <div class="blog" ng-controller="blogCtrl">
     <form ng-submit="post()">
-      <textarea class="newPost" ng-model="$parent.newPost" placeholder="Write a new Post" required></textarea>
+      <textarea name="newPost" class="newPost" ng-model="newPost" placeholder="Write a new Post" required></textarea>
       <button type="submit" class="postButton">Post</button>
     </form>
     <ul>
-      <li ng-repeat="post in postList">
+      <li ng-repeat="post in postList | reverse">
         <div class="postContainer">
           <p class="postText">{{post.text}}</p>
           <form ng-submit="postComment(post.post_id)">
@@ -25,7 +25,7 @@
           </form>
           <div class="commentsContainer">
             <ul>
-              <li ng-repeat="comment in post.comments">
+              <li ng-repeat="comment in post.comments | reverse">
                 <p>{{comment.text}}</p>
               </li>
             </ul>
