@@ -5,6 +5,7 @@ html(ng-app="myApp")
     script(src="/javascripts/vendors/angular.min.js")
     script(src="/javascripts/vendors/angular-route.min.js")
     script(src="/javascripts/vendors/ng-file-upload-all.min.js")
+    link( rel="stylesheet" href="/javascripts/vendors/bootstrap.min.css")
     //script(src="/javascripts/scripts.js")
     script(src="/javascripts/appConfig.js")
     script(src="/javascripts/controllers/bridgeCtrl.js")
@@ -22,6 +23,7 @@ html(ng-app="myApp")
     script(src="/javascripts/functions.js")
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+div.container
 .search(ng-controller="searchCtrl")
   label(for="search") Search
   input(type='text' name="search" ng-keypress="searchQueue()" ng-model="query")

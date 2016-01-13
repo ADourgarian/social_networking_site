@@ -86,9 +86,7 @@ app.controller('bridgeCtrl',['$scope',  '$http', '$routeParams', 'authService','
     }
 
     function refresh(){
-      populateCurrentUserInfo();
 
-      populateUserInfo();
 
       // pre-fill form.
       fillCheckboxes($scope.editable.instrumentsPlayed, $scope.instruments);
@@ -208,6 +206,8 @@ app.controller('bridgeCtrl',['$scope',  '$http', '$routeParams', 'authService','
         $scope.currentUserInfo = userInfos.currentUserInfo;
 
         userInfoFactory.submission($scope.username, $scope.userInfo);
+        populateCurrentUserInfo();
+        populateUserInfo();
         refresh()
       } else {
         userInfos = userInfoFactory.subscribe($scope.userInfo, $scope.currentUserInfo);
@@ -215,6 +215,8 @@ app.controller('bridgeCtrl',['$scope',  '$http', '$routeParams', 'authService','
         $scope.currentUserInfo = userInfos.currentUserInfo;
 
         userInfoFactory.submission($scope.username, $scope.userInfo);
+        populateCurrentUserInfo();
+        populateUserInfo();
         refresh()
       }
     }

@@ -1,5 +1,5 @@
 
-<div ng-if="openForm === false">
+<div ng-if="openForm === false" class="container">
   <image src="{{profilePic}}"></image>
   <h1>{{fullName}}</h1>
   <button ng-if="url === currentUser" ng-click="editForm()">Edit</button>
@@ -13,7 +13,7 @@
   <div class="blog" ng-controller="blogCtrl">
     <form ng-submit="post()">
       <textarea name="newPost" class="newPost" ng-model="newPost" placeholder="Write a new Post" required></textarea>
-      <button type="submit" class="postButton">Post</button>
+      <button type="submit" class="btn btn-default">Post</button>
     </form>
     <ul>
       <li ng-repeat="post in postList | reverse">
@@ -46,12 +46,10 @@
 <div ng-if="openForm === true">
   <button ng-click="editPic()">{{profilePicButton}}</button>
   <form ng-submit="submit()">
-    <label>First Name</label>
-    <input type="text" name="fName" ng-model="userInfo.firstName" value={{userInfo.firstName}}>
-    <label>Last Name</label>
-    <input type="text" name="lName" ng-model="userInfo.lastName" value={{userInfo.lastName}}>
-    <label>City</label>
-    <input type="text" name="city" ng-model="editable.city" value={{editable.city}}>
+    <fieldset class="form-group">
+      <label>City</label>
+      <input type="text" name="city" ng-model="editable.city" value={{editable.city}}>
+    </fieldset>
     <div>
       <h2>Instruments</h2>
       <fieldset>

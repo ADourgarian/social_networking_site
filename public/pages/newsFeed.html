@@ -1,0 +1,28 @@
+<div class="blog" ng-controller="blogCtrl">
+  <form ng-submit="post()">
+    <textarea name="newPost" class="newPost" ng-model="newPost" placeholder="Write a new Post" required></textarea>
+    <button type="submit" class="postButton">Post</button>
+  </form>
+  <ul>
+    <li ng-repeat="post in $parent.postList | reverse">
+      <div class="postContainer">
+        <img src="{{post.posterPic}}"/>
+        <p class="poster">{{post.poster}}</p>
+        <p class="postText">{{post.text}}</p>
+        <form ng-submit="postComment(post.post_id)">
+          <textarea ng-model="post.newComment" required></textarea>
+          <button type="submit">Post Comment</button>
+        </form>
+        <div class="commentsContainer">
+          <ul>
+            <li ng-repeat="comment in post.comments | reverse">
+              <img src="{{comment.posterPic}}"/>
+              <p>{{comment.poster}}</p>
+              <p>{{comment.text}}</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
