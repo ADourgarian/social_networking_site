@@ -70,6 +70,7 @@ app.factory('userInfoFactory', function($http, $routeParams, authService, $locat
   };
 
   myService.post = function (newPost, postList, currentUserInfo) {
+    console.log('newPost: ',newPost);
     var currentPost = {
       text: newPost,
       post_id: postList.length,
@@ -83,7 +84,32 @@ app.factory('userInfoFactory', function($http, $routeParams, authService, $locat
     return postList
   };
 
-  myService.postComment = function (post_id, postList, currentUserInfo) {
+  //myService.postComment = function (post, postList, currentUserInfo) {
+  //  console.log('MY POST', post);
+  //  var currentComment = {
+  //    text: post.newComment,
+  //    comment_id: post.comments.length,
+  //    date: new Date(),
+  //    poster: currentUserInfo.firstName + ' ' + currentUserInfo.lastName,
+  //    username: post.username,
+  //    postOwner:post.username,
+  //    post_id: post.post_id
+  //  };
+  //
+  //  post.comments.push(currentComment);
+  //  post.newComment = '';
+  //  $http({
+  //    url: '/blog/comment',
+  //    method: 'put',
+  //    data: currentComment
+  //  }).then(function(response){
+  //    console.log(response);
+  //  });
+  //  return postList;
+  //};
+
+
+  myService.postComment = function (post_id, postOwner, postList, currentUserInfo) {
     for (var i in postList) {
       if (postList[i].post_id === post_id) {
         var currentComment = {
@@ -91,10 +117,20 @@ app.factory('userInfoFactory', function($http, $routeParams, authService, $locat
           comment_id: postList[i].comments.length,
           date: new Date(),
           poster: currentUserInfo.firstName + ' ' + currentUserInfo.lastName,
-          username: currentUserInfo.username
+          username: currentUserInfo.username,
+          postOwner: postOwner,
+          post_id: post_id
         };
         postList[i].comments.push(currentComment);
         postList[i].newComment = '';
+        console.log('CURRENT COMMENT:', currentComment);
+        $http({
+          url: '/blog/comment',
+          method: 'put',
+          data: currentComment
+        }).then(function(response){
+          console.log(response.data);
+        })
       }
     }
     return postList;

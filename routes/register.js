@@ -27,6 +27,7 @@ router.post('/', function (req, res, next) {
         user.city='';
         user.profilePic_id='';
         user.coverPhoto='';
+        user.aboutMe='';
         userInfo.Create(user, function (err, userInfo) {
           console.log(user);
           if (err) {

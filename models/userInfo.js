@@ -19,7 +19,8 @@ var userInfoSchema = new mongoose.Schema({
   profilePic_id:String,
   coverPhoto: String,
   following: [],
-  followers: []
+  followers: [],
+  aboutMe: String
 });
 /**
  * Statics

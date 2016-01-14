@@ -1,35 +1,47 @@
 
-<div ng-if="openForm === false" class="container">
-  <image src="{{profilePic}}"></image>
-  <h1>{{fullName}}</h1>
-  <button ng-if="url === currentUser" ng-click="editForm()">Edit</button>
-  <button ng-show="url !== currentUser" ng-click="subscribeToggle()">{{subscribeButton}}</button>
-  <ul>
-    <li ng-repeat="instrument in editable.instrumentsPlayed">{{instrument}}</li>
-  </ul>
-  <ul>
-    <li ng-repeat="genre in editable.genresPlayed">{{genre}}</li>
-  </ul>
-  <div class="blog" ng-controller="blogCtrl">
+<div ng-if="openForm === false">
+  <div>
+    <image src="{{profilePic}}"></image>
+    <div class="page-header">
+      <h1>{{fullName}}</h1>
+      <button class="btn btn-default" ng-if="url === currentUser" ng-click="editForm()">Edit Profile</button>
+      <button class="btn btn-default" ng-show="url !== currentUser" ng-click="subscribeToggle()">{{subscribeButton}}</button>
+    </div>
+    <ul class="list-group col-md-3">
+      <li class="list-group-item active">INSTRUMENTS PLAYED</li>
+      <li class="list-group-item" ng-repeat="instrument in editable.instrumentsPlayed">{{instrument}}</li>
+    </ul>
+    <ul class="list-group col-md-3">
+      <li class="list-group-item active">GENRES PLAYED</li>
+      <li class="list-group-item" ng-repeat="genre in editable.genresPlayed">{{genre}}</li>
+    </ul>
+    <div class="about col-md-6">
+      <h3>About Me:</h3>
+      <p>{{editable.aboutMe}}</p>
+    </div>
+  </div>
+  <div class="blog">
     <form ng-submit="post()">
-      <textarea name="newPost" class="newPost" ng-model="newPost" placeholder="Write a new Post" required></textarea>
-      <button type="submit" class="btn btn-default">Post</button>
+      <textarea name="newPost" class="form-control" ng-model="$parent.newPost" placeholder="Write a new Post" required></textarea>
+      <button type="submit" class="btn btn-default post-button">Post</button>
     </form>
-    <ul>
-      <li ng-repeat="post in postList | reverse">
+    <ul class="blogContent">
+      <li class="list-group-item" ng-repeat="post in $parent.postList | reverse">
+        <p>{{post.poster}}</p>
         <div class="postContainer">
           <p class="postText">{{post.text}}</p>
-          <form ng-submit="postComment(post.post_id)">
-            <textarea ng-model="post.newComment" required></textarea>
-            <button type="submit">Post Comment</button>
-          </form>
           <div class="commentsContainer">
             <ul>
-              <li ng-repeat="comment in post.comments | reverse">
+              <li class="comment list-group-item" ng-repeat="comment in post.comments | reverse">
+                <p>{{comment.poster}}:</p>
                 <p>{{comment.text}}</p>
               </li>
             </ul>
           </div>
+          <form ng-submit="postComment(post.post_id)" class="form-group comment-entry">
+            <textarea ng-model="post.newComment" class="form-control" placeholder="Write a new Comment" required></textarea>
+            <button class="btn btn-default comment-button" type="submit">Post Comment</button>
+          </form>
         </div>
       </li>
     </ul>
@@ -44,12 +56,18 @@
   </form>
 </div>
 <div ng-if="openForm === true">
-  <button ng-click="editPic()">{{profilePicButton}}</button>
+  <button class="btn btn-default" ng-click="editPic()">{{profilePicButton}}</button>
   <form ng-submit="submit()">
-    <fieldset class="form-group">
-      <label>City</label>
-      <input type="text" name="city" ng-model="editable.city" value={{editable.city}}>
-    </fieldset>
+    <div class="row">
+      <fieldset class="col-md-3">
+        <label>City</label>
+        <input class="form-control" type="text" name="city" ng-model="editable.city" value={{editable.city}}>
+      </fieldset>
+      <fieldset class="col-md-6">
+        <label>About Me</label>
+        <textarea class="form-control" name="aboutMe" ng-model="editable.aboutMe" value={{editable.aboutMe}}></textarea>
+      </fieldset>
+    </div>
     <div>
       <h2>Instruments</h2>
       <fieldset>

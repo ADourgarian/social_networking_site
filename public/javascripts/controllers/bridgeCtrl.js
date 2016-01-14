@@ -4,7 +4,8 @@ app.controller('bridgeCtrl',['$scope',  '$http', '$routeParams', 'authService','
     $scope.currentUser = authService.getUser().username; //set var for logged ßin user
     $scope.subscribeButton = 'Subscribe';
     var userInfos = {};
-
+    $scope.postList = [];
+    $scope.newPost = '';
 
 
 
@@ -80,6 +81,12 @@ app.controller('bridgeCtrl',['$scope',  '$http', '$routeParams', 'authService','
         $scope.editable = $scope.userInfo.editable;
         $scope.fullName = $scope.userInfo.firstName + ' ' + $scope.userInfo.lastName;
         $scope.profilePic = $scope.userInfo.profilePic;
+
+        userInfoFactory.getBlog($scope.username).then(function(data){
+
+          $scope.postList = data.posts;
+
+        });
 
         refresh();
       });
@@ -219,7 +226,22 @@ app.controller('bridgeCtrl',['$scope',  '$http', '$routeParams', 'authService','
         populateUserInfo();
         refresh()
       }
-    }
+    };
 
+    // ------------ BLOG ------------ //
+
+    // every post gets its own object with its own comments array, tracked by IDs, and get added to postList array.
+
+
+    $scope.post = function(){
+      $scope.postList = userInfoFactory.post($scope.newPost, $scope.postList, $scope.currentUserInfo);
+      userInfoFactory.updateBlog($scope.url, $scope.postList);
+    };
+
+    // every comment added to current post's comments field, each comment has object with ID for tracking
+    $scope.postComment = function(post_id){
+      $scope.postList = userInfoFactory.postComment(post_id, $scope.postList, $scope.currentUserInfo);
+      userInfoFactory.updateBlog($scope.url, $scope.postList);
+    }
 
   }]);

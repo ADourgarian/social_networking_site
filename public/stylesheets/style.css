@@ -6,3 +6,49 @@ body {
 a {
   color: #00B7FF;
 }
+
+h3 {
+  margin-top:0px;
+}
+
+.page-header h1 {
+  display:inline;
+}
+
+.page-header button {
+  display:inline;
+}
+
+.post-button, .comment-button {
+  margin: 10px 0 10px 0;
+}
+
+.post-entry, .comment-entry {
+  margin:20px 0 0 40px;
+}
+
+.navbar-brand, .navbar-form{
+  margin-bottom: 0px;
+}
+
+.page-header {
+  margin-top:10px;
+}
+
+.navButtons li {
+  float: left;
+  list-style: none;
+  text-align: center;
+  width: 33%;
+}
+
+.blogContent{
+  padding-left:0;
+}
+
+.blog textarea{
+  width: 75%;
+}
+/*.nav {*/
+  /*background-color: #3a8acf;*/
+/*}*/

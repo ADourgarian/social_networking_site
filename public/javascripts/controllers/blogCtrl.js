@@ -4,8 +4,6 @@ app.controller('blogCtrl',['$scope', 'userInfoFactory', 'authService',
 
     var nextPostId = 0;
     $scope.url = userInfoFactory.directUser();
-    $scope.newPost = '';
-    $scope.newComment = '';
     $scope.postList = [];
 
     userInfoFactory.getBlog($scope.url).then(function(data){
