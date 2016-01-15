@@ -23,24 +23,21 @@ html(ng-app="myApp")
     link( rel="stylesheet" href="/stylesheets/bootstrap.min.css")
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    nav(ng-controller="navCtrl")
+    nav(ng-controller="navCtrl" class='theNav')
       .container-fluid
         .row.nav
           h3.col-md-2(ng-show='user.username') {{user.username}}
           .search.col-md-6(ng-controller="searchCtrl")
-            .input-group
+            form.input-group(ng-submit="entry()")
               input.form-control(type='text' name="search" ng-keypress="searchQueue()" ng-model="query")
               span.input-group-btn
                 button(type="submit" class="btn btn-default") Search
             ul
               li(ng-repeat="user in userList track by $index" ng-click="navigate(user.username)") {{user.firstName + ' ' + user.lastName}}
           ul.navButtons.col-md-4
-            li.col-lg-3.btn.btn-default(ng-hide="user.username")
-              a(href='#/login') login
-            li.col-lg-3.btn.btn-default(ng-show="user.username")
-              a(href='#/newsFeed') NewsFeed
-            li.col-lg-3.btn.btn-default(ng-show='user.username')
-              a(href='/#bridge') Profile
-            li.col-lg-3.btn.btn-default(ng-show='user.username')
-              a(ng-click='logout()' href='#/') logout
-    block content
+            li.col-lg-3.btn.btn-default(ng-click="redirect('/login')" ng-hide="user.username") Login
+            li.col-lg-3.btn.btn-default(ng-click="redirect('/newsFeed')" ng-show="user.username") NewFeed
+            li.col-lg-3.btn.btn-default(ng-click="redirect('/bridge')" ng-show='user.username') Profile
+            li.col-lg-3.btn.btn-default(ng-click="logout()" ng-show='user.username') Logout
+    main
+      block content

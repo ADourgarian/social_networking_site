@@ -126,7 +126,7 @@ app.factory('userInfoFactory', function($http, $routeParams, authService, $locat
         console.log('CURRENT COMMENT:', currentComment);
         $http({
           url: '/blog/comment',
-          method: 'put',
+          method: 'post',
           data: currentComment
         }).then(function(response){
           console.log(response.data);
@@ -138,7 +138,7 @@ app.factory('userInfoFactory', function($http, $routeParams, authService, $locat
 
   myService.updateBlog = function(url, postList) {
     $http({
-      url: '/blog/' + url,
+      url: '/blog/post/' + url,
       method: 'post',
       data: postList
     }).then(function () {

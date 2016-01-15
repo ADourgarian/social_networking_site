@@ -25,5 +25,5 @@ app.controller('searchCtrl',['$scope', '$http', '$location', function($scope, $h
         $scope.message = 'No Users Found';
       }
     })
-  }
+  };
 }]);

@@ -18,7 +18,7 @@ var userInfoSchema = new mongoose.Schema({
   city: String,
   profilePic_id:String,
   coverPhoto: String,
-  following: [],
+  following: Array,
   followers: [],
   aboutMe: String
 });
@@ -32,7 +32,8 @@ userInfoSchema.statics.Create = function (userInfo, callback) {
     username: userInfo.username,
     city: userInfo.city,
     profilePic_id:userInfo.profilePic_id,
-    coverPhoto: userInfo.coverPhoto
+    coverPhoto: userInfo.coverPhoto,
+    following: userInfo.following
   });
 
   // save the user

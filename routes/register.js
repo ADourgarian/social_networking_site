@@ -28,6 +28,7 @@ router.post('/', function (req, res, next) {
         user.profilePic_id='';
         user.coverPhoto='';
         user.aboutMe='';
+        user.following=user.username;
         userInfo.Create(user, function (err, userInfo) {
           console.log(user);
           if (err) {

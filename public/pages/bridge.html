@@ -7,11 +7,11 @@
       <button class="btn btn-default" ng-if="url === currentUser" ng-click="editForm()">Edit Profile</button>
       <button class="btn btn-default" ng-show="url !== currentUser" ng-click="subscribeToggle()">{{subscribeButton}}</button>
     </div>
-    <ul class="list-group col-md-3">
+    <ul ng-if="editable.instrumentsPlayed[0]" class="list-group col-md-3">
       <li class="list-group-item active">INSTRUMENTS PLAYED</li>
       <li class="list-group-item" ng-repeat="instrument in editable.instrumentsPlayed">{{instrument}}</li>
     </ul>
-    <ul class="list-group col-md-3">
+    <ul ng-if="editable.genresPlayed[0]" class="list-group col-md-3">
       <li class="list-group-item active">GENRES PLAYED</li>
       <li class="list-group-item" ng-repeat="genre in editable.genresPlayed">{{genre}}</li>
     </ul>
@@ -38,7 +38,7 @@
               </li>
             </ul>
           </div>
-          <form ng-submit="postComment(post.post_id)" class="form-group comment-entry">
+          <form ng-submit="postComment(post.post_id, post.username)" class="form-group comment-entry">
             <textarea ng-model="post.newComment" class="form-control" placeholder="Write a new Comment" required></textarea>
             <button class="btn btn-default comment-button" type="submit">Post Comment</button>
           </form>

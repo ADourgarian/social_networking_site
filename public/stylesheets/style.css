@@ -1,14 +1,25 @@
 body {
-  padding: 50px;
+
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+main{
+  padding:50px;
+}
+
 a {
-  color: #00B7FF;
 }
 
 h3 {
   margin-top:0px;
+}
+
+nav{
+  background-color: rgba(38, 141, 229, 0.87);
+}
+
+.nav {
+  padding-top:12px;
 }
 
 .page-header h1 {
@@ -49,6 +60,3 @@ h3 {
 .blog textarea{
   width: 75%;
 }
-/*.nav {*/
-  /*background-color: #3a8acf;*/
-/*}*/

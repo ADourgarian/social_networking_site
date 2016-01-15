@@ -7,6 +7,9 @@ app.controller('navCtrl', ['authService', '$scope', '$location',
       $scope.user  = user;
     });
 
+    $scope.redirect = function(location){
+      $location.path(location);
+    };
 
     $scope.logout = function () {
       authService.logout();

@@ -239,9 +239,10 @@ app.controller('bridgeCtrl',['$scope',  '$http', '$routeParams', 'authService','
     };
 
     // every comment added to current post's comments field, each comment has object with ID for tracking
-    $scope.postComment = function(post_id){
-      $scope.postList = userInfoFactory.postComment(post_id, $scope.postList, $scope.currentUserInfo);
-      userInfoFactory.updateBlog($scope.url, $scope.postList);
+    $scope.postComment = function(post_id, postOwner){
+      console.log('post_id',post_id, 'post_Owner', postOwner);
+      $scope.postList = userInfoFactory.postComment(post_id, postOwner, $scope.postList, $scope.userInfo);
+      //userInfoFactory.updateBlog($scope.url, $scope.postList);
     }
 
   }]);
