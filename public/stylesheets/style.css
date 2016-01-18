@@ -1,6 +1,6 @@
 body {
-
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: rgba(253, 237, 237, 0.27);
 }
 
 main{
@@ -46,6 +46,10 @@ nav{
   margin-top:10px;
 }
 
+.headerButton {
+  margin-left: 10px;
+}
+
 .navButtons li {
   float: left;
   list-style: none;
@@ -53,10 +57,42 @@ nav{
   width: 33%;
 }
 
-.blogContent{
-  padding-left:0;
+.blog {
+  clear: both;
+  margin: 0 30px;
+  padding:20px 0;
+  border-radius: 10px;
 }
 
 .blog textarea{
   width: 75%;
+}
+
+.aboutMe h3{
+  padding-bottom: 8px;
+  border-bottom: 1px solid #EEEEEE;
+}
+
+.profilePic {
+  margin-bottom: 40px;
+}
+
+.listHeader {
+  background-color:#FFCC00;
+}
+
+.username {
+  margin-top: 3px;
+  text-align: center;
+}
+
+.blogHeader {
+  margin-top: 0;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #EEEEEE;
+}
+
+.blogContent {
+  padding:20px 0 0 0;
 }

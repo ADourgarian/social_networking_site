@@ -1,29 +1,4 @@
-<!--<div ng-controller="blogCtrl">-->
-  <!--<form ng-submit="post()">-->
-    <!--<textarea name="newPost" class="form-control post-entry" ng-model="newPost" placeholder="Write a new Post" required></textarea>-->
-    <!--<button type="submit" class="btn btn-default post-button">Post</button>-->
-  <!--</form>-->
-  <!--<ul class="blogContent">-->
-    <!--<li class="list-group-item" ng-repeat="post in $parent.postList | reverse">-->
-      <!--<p>{{post.poster}}</p>-->
-      <!--<div class="postContainer">-->
-        <!--<p class="postText">{{post.text}}</p>-->
-        <!--<div class="commentsContainer">-->
-          <!--<ul>-->
-            <!--<li class="comment list-group-item" ng-repeat="comment in post.comments | reverse">-->
-              <!--<p>{{comment.poster}}:</p>-->
-              <!--<p>{{comment.text}}</p>-->
-            <!--</li>-->
-          <!--</ul>-->
-        <!--</div>-->
-        <!--<form ng-submit="postComment(post.post_id)" class="form-group comment-entry">-->
-          <!--<textarea ng-model="post.newComment" class="form-control" placeholder="Write a new Comment" required></textarea>-->
-          <!--<button class="btn btn-default comment-button" type="submit">Post Comment</button>-->
-        <!--</form>-->
-      <!--</div>-->
-    <!--</li>-->
-  <!--</ul>-->
-<!--</div>-->
+
 <div class="blog">
   <form ng-submit="post()">
     <textarea name="newPost" class="form-control" ng-model="newPost" placeholder="Write a new Post" required></textarea>

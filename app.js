@@ -31,7 +31,9 @@ app.use(expressValidator());
 
 // set cloudinary cdn global parameters
 cloudinary.config({
-
+  cloud_name: 'beastlyorion',
+  api_key: '429121516721481',
+  api_secret: 'F_2XMBj0T3qgjAhX9HXAgDMTLJA'
 });
 
 // Bring Mongoose into the app

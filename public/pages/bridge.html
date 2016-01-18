@@ -1,61 +1,65 @@
 
 <div ng-if="openForm === false">
-  <div>
-    <image src="{{profilePic}}"></image>
+  <div class="container">
     <div class="page-header">
       <h1>{{fullName}}</h1>
-      <button class="btn btn-default" ng-if="url === currentUser" ng-click="editForm()">Edit Profile</button>
-      <button class="btn btn-default" ng-show="url !== currentUser" ng-click="subscribeToggle()">{{subscribeButton}}</button>
+      <button class="btn btn-default headerButton" ng-if="url === currentUser" ng-click="editForm()">Edit Profile</button>
+      <button class="btn btn-default headerButton" ng-show="url !== currentUser" ng-click="subscribeToggle()">{{subscribeButton}}</button>
     </div>
-    <ul ng-if="editable.instrumentsPlayed[0]" class="list-group col-md-3">
-      <li class="list-group-item active">INSTRUMENTS PLAYED</li>
-      <li class="list-group-item" ng-repeat="instrument in editable.instrumentsPlayed">{{instrument}}</li>
-    </ul>
-    <ul ng-if="editable.genresPlayed[0]" class="list-group col-md-3">
-      <li class="list-group-item active">GENRES PLAYED</li>
-      <li class="list-group-item" ng-repeat="genre in editable.genresPlayed">{{genre}}</li>
-    </ul>
-    <div class="about col-md-6">
-      <h3>About Me:</h3>
-      <p>{{editable.aboutMe}}</p>
-    </div>
-  </div>
-  <div class="blog">
-    <form ng-submit="post()">
-      <textarea name="newPost" class="form-control" ng-model="$parent.newPost" placeholder="Write a new Post" required></textarea>
-      <button type="submit" class="btn btn-default post-button">Post</button>
-    </form>
-    <ul class="blogContent">
-      <li class="list-group-item" ng-repeat="post in $parent.postList | reverse">
-        <p>{{post.poster}}</p>
-        <div class="postContainer">
-          <p class="postText">{{post.text}}</p>
-          <div class="commentsContainer">
-            <ul>
-              <li class="comment list-group-item" ng-repeat="comment in post.comments | reverse">
-                <p>{{comment.poster}}:</p>
-                <p>{{comment.text}}</p>
-              </li>
-            </ul>
+    <row>
+      <image class="profilePic col-md-3" src="{{profilePic}}"></image>
+      <ul ng-if="editable.instrumentsPlayed[0]" class="list-group col-md-3">
+        <li class="list-group-item listHeader">INSTRUMENTS PLAYED</li>
+        <li class="list-group-item" ng-repeat="instrument in editable.instrumentsPlayed">{{instrument}}</li>
+      </ul>
+      <ul ng-if="editable.genresPlayed[0]" class="list-group col-md-3">
+        <li class="list-group-item listHeader">GENRES PLAYED</li>
+        <li class="list-group-item" ng-repeat="genre in editable.genresPlayed">{{genre}}</li>
+      </ul>
+      <div class="aboutMe col-md-3">
+        <h3>About Me</h3>
+        <p>{{editable.aboutMe}}</p>
+      </div>
+    </row>
+    <div class="blog">
+      <h2 class="blogHeader">MyBlog</h2>
+      <form ng-submit="post()">
+        <textarea name="newPost" class="form-control" ng-model="$parent.newPost" placeholder="Write a new Post" required></textarea>
+        <button type="submit" class="btn btn-default post-button">Post</button>
+      </form>
+      <ul class="blogContent">
+        <li class="list-group-item" ng-repeat="post in $parent.postList | reverse">
+          <p>{{post.poster}}</p>
+          <div class="postContainer">
+            <p class="postText">{{post.text}}</p>
+            <div class="commentsContainer">
+              <ul>
+                <li class="comment list-group-item" ng-repeat="comment in post.comments | reverse">
+                  <p>{{comment.poster}}:</p>
+                  <p>{{comment.text}}</p>
+                </li>
+              </ul>
+            </div>
+            <form ng-submit="postComment(post.post_id, post.username)" class="form-group comment-entry">
+              <textarea ng-model="post.newComment" class="form-control" placeholder="Write a new Comment" required></textarea>
+              <button class="btn btn-default comment-button" type="submit">Post Comment</button>
+            </form>
           </div>
-          <form ng-submit="postComment(post.post_id, post.username)" class="form-group comment-entry">
-            <textarea ng-model="post.newComment" class="form-control" placeholder="Write a new Comment" required></textarea>
-            <button class="btn btn-default comment-button" type="submit">Post Comment</button>
-          </form>
-        </div>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    </div>
   </div>
-</div>
-<div ng-show="changeProfilePic === true">
-  <form class="profilePicForm" ng-submit="submitProfilePic()">
-    <label for="file">File:</label>
-    <input type="file" name="file" id="file" ng-model="upload.file" ngf-select ngf-max-size="25MB" ngf-min-height="100"
-           ngf-resize="{width: 250, height: 250}" required/>
-    <input type="submit"/>
-  </form>
 </div>
 <div ng-if="openForm === true">
+  <button class="btn btn-default" ng-click="editForm()">Done Editing</button>
+  <div ng-show="changeProfilePic === true">
+    <form class="profilePicForm" ng-submit="submitProfilePic()">
+      <label for="file">File:</label>
+      <input type="file" name="file" id="file" ng-model="upload.file" ngf-select ngf-max-size="25MB" ngf-min-height="100"
+             ngf-resize="{width: 250, height: 250}" required/>
+      <input class="btn btn-default" type="submit"/>
+    </form>
+  </div>
   <button class="btn btn-default" ng-click="editPic()">{{profilePicButton}}</button>
   <form ng-submit="submit()">
     <div class="row">
@@ -85,8 +89,8 @@
         </div>
       </fieldset>
     </div>
-    <input type="submit" value="Save">
-    <button ng-click="editForm()">Done Editing</button>
+    <input class="btn btn-default" type="submit" value="Save">
+    <button class="btn btn-default" ng-click="editForm()">Done Editing</button>
   </form>
 </div>
 

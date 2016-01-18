@@ -26,7 +26,7 @@ html(ng-app="myApp")
     nav(ng-controller="navCtrl" class='theNav')
       .container-fluid
         .row.nav
-          h3.col-md-2(ng-show='user.username') {{user.username}}
+          h3.col-md-2.username(ng-show='user.username') {{user.username}}
           .search.col-md-6(ng-controller="searchCtrl")
             form.input-group(ng-submit="entry()")
               input.form-control(type='text' name="search" ng-keypress="searchQueue()" ng-model="query")
